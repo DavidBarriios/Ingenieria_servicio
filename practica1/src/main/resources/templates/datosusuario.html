@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Datos de Usuario</title>
+</head>
+<body>
+<h2>Datos del Usuario en la Sesión</h2>
+    
+    <div th:if="${usuario != null}">
+       <p><strong>Usuario:</strong> <span th:text="${usuario.usuario}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${usuario.email}"></span></p>
+        <p><strong>Nombre:</strong> <span th:text="${usuario.nombre}"></span></p>
+        <p><strong>Apellidos:</strong> <span th:text="${usuario.apellidos}"></span></p>
+    </div>
+    
+    <div th:if="${usuario == null}">
+        <p th:text="${mensaje}"></p>
+    </div>
+    
+    <br>
+    <a href="/formulario">Ingresar otro usuario</a>
+</body>
+</body>
+</html>
