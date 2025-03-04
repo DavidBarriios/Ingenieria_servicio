@@ -14,7 +14,7 @@ import java.util.List;
 @Controller
 public class UsuarioController {
 	
-	//Muestra formulario de usuario  
+	//Muestra formulario de usuario    
 	@GetMapping("/formulario")
 	public String mostrarFormulario() {
 		return "formulario";
