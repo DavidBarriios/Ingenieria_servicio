@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.UsuarioDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,12 +10,12 @@ import java.util.Map;
 import java.util.HashMap;
 
 @Controller
-@SessionAttributes("usuariosRegistrados") // ✅ Almacena la lista de usuarios en sesión
+@SessionAttributes("usuariosRegistrados") // ✅ Guarda la lista de usuarios en sesión
 public class UsuarioController {
 
-    private Map<String, UsuarioDTO> usuariosRegistrados = new HashMap<>(); // Almacena usuarios
+    private final Map<String, UsuarioDTO> usuariosRegistrados = new HashMap<>(); // Almacena usuarios
 
-    // ✅ Método para inicializar usuarios en sesión si aún no existen
+    //Inicializa la lista de usuarios en la sesión si no existe
     @ModelAttribute("usuariosRegistrados")
     public Map<String, UsuarioDTO> getUsuariosRegistrados() {
         return usuariosRegistrados;
@@ -41,20 +40,24 @@ public class UsuarioController {
         UsuarioDTO usuarioDTO = usuariosRegistrados.get(nombreusuario);
 
         if (usuarioDTO == null) {
-            System.out.println("Error: Usuario no encontrado.");
             model.addAttribute("error", "Usuario no encontrado");
             return "login";
         }
 
         if (!usuarioDTO.getPassword().equals(password)) {
-            System.out.println("Error: Contraseña incorrecta.");
             model.addAttribute("error", "Contraseña incorrecta");
             return "login";
         }
 
-        System.out.println("Inicio de sesión exitoso. Redirigiendo a /articulos");
+        //Almacenar usuario en la sesión
         session.setAttribute("usuario", usuarioDTO);
-        return "redirect:/articulos";
+
+        //Si es administrador, redirige a la tabla de usuarios
+        if ("ADMIN".equals(usuarioDTO.getRol())) {
+            return "redirect:/datosusuario";
+        } else {
+            return "redirect:/articulos";
+        }
     }
 
     // 📌 Procesar registro
@@ -72,13 +75,21 @@ public class UsuarioController {
             modelAndView.addObject("error", "El usuario ya está registrado.");
         } else {
             UsuarioDTO nuevoUsuario = new UsuarioDTO(usuario, password, rol);
-            System.out.println("Registrando usuario: " + usuario + " con rol: " + rol);
             usuariosRegistrados.put(usuario, nuevoUsuario); // ✅ Se almacena correctamente
+
+            // 📌 Verificación en consola
+            System.out.println("Usuarios registrados después del registro:");
+            usuariosRegistrados.forEach((k, v) -> System.out.println("Usuario: " + k + ", Rol: " + v.getRol()));
 
             modelAndView.setViewName("redirect:/login");
         }
 
-        return modelAndView; 
+        return modelAndView;
+    }
+
+    @GetMapping("/registro")
+    public String mostrarRegistro() {
+        return "registro";
     }
 
     // 📌 Cerrar sesión
@@ -88,16 +99,37 @@ public class UsuarioController {
         return "redirect:/login";
     }
 
-    // 📌 Vista de artículos (después del login)
+    // 📌 Vista de artículos (para usuarios normales)
     @GetMapping("/articulos")
-    public String mostrarArticulos(HttpSession session, Model model) {
+    public String mostrarArticulos(Model model, HttpSession session) {
         UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 
+        //Si no hay usuario en sesión, redirigir al login
         if (usuario == null) {
             return "redirect:/login";
         }
 
         model.addAttribute("usuario", usuario);
         return "articulos";
+    }
+
+    // 📌 Vista para el Administrador (Lista de Usuarios)
+    @GetMapping("/datosusuario")
+    public String mostrarUsuarios(Model model, HttpSession session,
+                                  @ModelAttribute("usuariosRegistrados") Map<String, UsuarioDTO> usuariosRegistrados) {
+        UsuarioDTO usuarioLogueado = (UsuarioDTO) session.getAttribute("usuario");
+
+        //Si no hay usuario o no es admin, redirigir a artículos
+        if (usuarioLogueado == null || !"ADMIN".equals(usuarioLogueado.getRol())) {
+            return "redirect:/articulos";
+        }
+
+        //Verificación en consola
+        System.out.println("Usuarios almacenados en sesión:");
+        usuariosRegistrados.forEach((k, v) -> System.out.println("Usuario: " + k + ", Rol: " + v.getRol()));
+
+        //pasar la lista de usuarios a la vista
+        model.addAttribute("usuarios", usuariosRegistrados.values());
+        return "datosusuario";
     }
 }
