@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Artículos</title>
+</head>
+<body>
+    <h2>Bienvenido, <span th:text="${usuario != null ? usuario.usuario : 'Invitado'}"></span></h2>
+    <p th:if="${usuario != null}">Has iniciado sesión como <span th:text="${usuario.rol}"></span>.</p>
+
+    <h3>Lista de Artículos</h3>
+    <ul>
+        <li>Artículo 1</li>
+        <li>Artículo 2</li>
+        <li>Artículo 3</li>
+    </ul>
+
+    <p th:if="${usuario == null}" style="color: red;">No tienes acceso. <a href="/login">Inicia sesión</a></p>
+
+    <button th:if="${usuario != null}" onclick="window.location.href='/logout'">Cerrar sesión</button>
+</body>
+</html>
