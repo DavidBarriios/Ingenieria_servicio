@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios Registrados</title>
+</head>
+<body>
+    <h2>Lista de Usuarios Registrados</h2>
+
+    <!-- Mensaje si no hay usuarios -->
+    <p th:if="${usuarios.empty}">No hay usuarios registrados.</p>
+
+    <!-- Tabla de usuarios -->
+    <table border="1" th:if="${not usuarios.empty}">
+        <thead>  
+            <tr>
+                <th>Usuario</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Recorre la lista de usuarios -->
+            <tr th:each="usuario : ${usuarios}">
+               <td th:text="${usuario.nombreusuario}"></td>
+                <td th:text="${usuario.rol}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Botón para volver -->
+    <br>
+    <a href="/logout">Cerrar sesión</a>
+</body>
+</html>
