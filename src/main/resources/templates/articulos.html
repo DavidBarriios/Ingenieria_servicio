@@ -1,126 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <style>
-    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
-    .navbar {
-      margin-bottom: 50px;
-      border-radius: 0;
-    }
-    
-    /* Remove the jumbotron's default bottom margin */ 
-     .jumbotron {
-      margin-bottom: 0;
-    }
-   
-    /* Add a gray background color and some padding to the footer */
-    footer {
-      background-color: #f2f2f2;
-      padding: 25px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Sudaderas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .product-card {
+            background-color: white;
+            width: 280px;
+            margin: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .product-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .product-description {
+            font-size: 0.9em;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .product-price {
+            font-size: 1.5em;
+            color: #e67e22;
+            margin: 10px 0;
+        }
+
+        .add-to-cart-btn {
+            background-color: #e67e22;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #d35400;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <h1>Bienvenido a la Tienda de Sudaderas</h1>
+    </header>
 <h2>Bienvenido, <span th:text="${usuario != null ? usuario.nombreusuario : 'Invitado'}"></span></h2>
-<div class="jumbotron">
-  <div class="container text-center">
-    <h1>Online Store</h1>      
-    <p>Mission, Vission & Values</p>
-  </div>
-</div>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#">Logo</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Deals</a></li>
-        <li><a href="#">Stores</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+    <div class="container">
+        <!-- Producto 1 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="https://via.placeholder.com/300x200.png?text=Sudadera+1" alt="Sudadera 1">
+            </div>
+            <div class="product-name">Sudadera Clásica</div>
+            <div class="product-description">Sudadera cómoda y suave, perfecta para el día a día.</div>
+            <div class="product-price">€29.99</div>
+            <button class="add-to-cart-btn">Añadir al carrito</button>
+        </div>
 
-<div class="container">    
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading">BLACK FRIDAY DEAL</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-danger">
-        <div class="panel-heading">BLACK FRIDAY DEAL</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-success">
-        <div class="panel-heading">BLACK FRIDAY DEAL</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-      </div>
-    </div>
-  </div>
-</div><br>
+        <!-- Producto 2 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="https://via.placeholder.com/300x200.png?text=Sudadera+2" alt="Sudadera 2">
+            </div>
+            <div class="product-name">Sudadera Deportiva</div>
+            <div class="product-description">Ideal para tus entrenamientos o actividades al aire libre.</div>
+            <div class="product-price">€34.99</div>
+            <button class="add-to-cart-btn">Añadir al carrito</button>
+        </div>
 
-<div class="container">    
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading">BLACK FRIDAY DEAL</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-primary">
-        <div class="panel-heading">BLACK FRIDAY DEAL</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-primary">
-        <div class="panel-heading">BLACK FRIDAY DEAL</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-      </div>
-    </div>
-  </div>
-</div><br><br>
+        <!-- Producto 3 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="https://via.placeholder.com/300x200.png?text=Sudadera+3" alt="Sudadera 3">
+            </div>
+            <div class="product-name">Sudadera con Capucha</div>
+            <div class="product-description">Sudadera cálida con capucha para esos días fríos.</div>
+            <div class="product-price">€39.99</div>
+            <button class="add-to-cart-btn">Añadir al carrito</button>
+        </div>
 
-<footer class="container-fluid text-center">
-  <p>Online Store Copyright</p>  
-  <form class="form-inline">Get deals:
-    <input type="email" class="form-control" size="50" placeholder="Email Address">
-    <button type="button" class="btn btn-danger">Sign Up</button>
-  </form>
-</footer>
- <p th:if="${usuario == null}" style="color: red;">No tienes acceso. <a href="/login">Inicia sesión</a></p>
+        <!-- Producto 4 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="https://via.placeholder.com/300x200.png?text=Sudadera+4" alt="Sudadera 4">
+            </div>
+            <div class="product-name">Sudadera Estilo Urbano</div>
+            <div class="product-description">Sudadera de estilo urbano, cómoda y con diseño moderno.</div>
+            <div class="product-price">€27.99</div>
+            <button class="add-to-cart-btn">Añadir al carrito</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Tienda de Sudaderas - Todos los derechos reservados</p>
+    </footer>
+     <p th:if="${usuario == null}" style="color: red;">No tienes acceso. <a href="/login">Inicia sesión</a></p>
 
     <button th:if="${usuario != null}" onclick="window.location.href='/logout'">Cerrar sesión</button>
 </body>
