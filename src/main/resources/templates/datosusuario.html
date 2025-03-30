@@ -8,10 +8,10 @@
     <h2>Lista de Usuarios Registrados</h2>
 
     <!-- Mensaje si no hay usuarios -->
-    <p th:if="${usuarios.empty}">No hay usuarios registrados.</p>
+    <p th:if="${usuarios == null or usuarios.isEmpty()}">No hay usuarios registrados.</p>
 
     <!-- Tabla de usuarios -->
-    <table border="1" th:if="${not usuarios.empty}">
+    <table border="1" th:if="${usuarios != null and not usuarios.isEmpty()}">
         <thead>  
             <tr>
                 <th>Usuario</th>
@@ -21,8 +21,8 @@
         <tbody>
             <!-- Recorre la lista de usuarios -->
             <tr th:each="usuario : ${usuarios}">
-               <td th:text="${usuario.nombreusuario}"></td>
-                <td th:text="${usuario.rol}"></td>
+               <td th:text="${usuario.name}"></td>
+               <td th:text="${usuario.es_admin == 1 ? 'Administrador' : 'Usuario'}"></td> <!-- Mostrar rol basado en es_admin -->
             </tr>
         </tbody>
     </table>

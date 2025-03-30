@@ -22,7 +22,7 @@ public class UsuarioRepository implements ServiciodbgInterface {
 
     private final RowMapper<Userlogin> mapper = (rs, numRow) -> {
         Userlogin usuario = new Userlogin();
-        usuario.setNombre(rs.getString("nombre_usuario")); // Asigna el nombre de usuario
+        usuario.setName(rs.getString("nombre_usuario")); // Asigna el nombre de usuario
         usuario.setPass(rs.getString("contraseña")); // Asigna la contraseña
         usuario.setEs_admin(rs.getInt("es_admin")); // Asigna el rol (es_admin)
         return usuario;

@@ -97,7 +97,7 @@
     <header>
         <h1>Bienvenido a la Tienda de Sudaderas</h1>
     </header>
-<h2>Bienvenido, <span th:text="${usuario != null ? usuario.nombreusuario : 'Invitado'}"></span></h2>
+<h2><span th:text="'Bienvenido: ' + ${usuario}"></span></h2>
 
     <div class="container">
         <!-- Producto 1 -->
