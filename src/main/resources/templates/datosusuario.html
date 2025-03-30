@@ -21,8 +21,8 @@
         <tbody>
             <!-- Recorre la lista de usuarios -->
             <tr th:each="usuario : ${usuarios}">
-               <td th:text="${usuario.nombreusuario}"></td>
-                <td th:text="${usuario.rol}"></td>
+                <td th:text="${usuario.nombre}"></td> <!-- Usamos 'nombre' en vez de 'nombreusuario' -->
+                <td th:text="${usuario.es_admin == 1 ? 'Administrador' : 'Usuario Regular'}"></td> <!-- Convertimos el valor de 'es_admin' en texto -->
             </tr>
         </tbody>
     </table>

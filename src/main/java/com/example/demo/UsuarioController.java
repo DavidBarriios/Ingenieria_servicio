@@ -1,124 +1,116 @@
 package com.example.demo;
 
-import com.example.demo.Usuario;
-import com.example.demo.UsuarioRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @Controller
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private ServiciodbgInterface dao;
 
-    // Mostrar formulario de login
+    // Método para mostrar la página de login
     @GetMapping("/login")
-    public String mostrarLogin() {
-        return "login";
-    }
+    public String mostrarLogin(HttpSession sesion, Model model) {
+        Userlogin user = (Userlogin) sesion.getAttribute("user");
 
-    // Procesar login
-    @PostMapping("/login")
-    public String procesarLogin(
-            @RequestParam("nombreusuario") String nombreusuario,
-            @RequestParam("password") String password,
-            HttpSession session,
-            Model model) {
-
-        System.out.println("🔍 Intentando iniciar sesión con usuario: " + nombreusuario);
-
-        // Buscar usuario en la base de datos
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByNombreusuario(nombreusuario);
-
-        if (usuarioOpt.isEmpty()) {
-            model.addAttribute("error", "Usuario no encontrado");
-            return "login";
-        }
-
-        Usuario usuario = usuarioOpt.get();
-
-        // Validar contraseña
-        if (!usuario.getPassword().equals(password)) {
-            model.addAttribute("error", "Contraseña incorrecta");
-            return "login";
-        }
-
-        // Guardar usuario en sesión
-        session.setAttribute("usuario", usuario);
-        System.out.println("Usuario guardado en sesión: " + session.getAttribute("usuario"));
-
-        // Redirección según el rol
-        if ("Administrador".equalsIgnoreCase(usuario.getRol().trim())) {
-            return "redirect:/datosusuario";
+        if (user == null) {
+            return "login"; // Si el usuario no está logueado, muestra la página de login
         } else {
-            return "redirect:/articulos";
+            if (user.getEs_admin() == 1) {
+                // Si el usuario es administrador, muestra la lista de usuarios
+                model.addAttribute("lista_usuarios", dao.getAllUsers());
+                return "admin"; // Página para el admin
+            } else {
+                model.addAttribute("usuario", user.getNombre());
+                return "articulos"; // Página para usuarios regulares
+            }
         }
     }
 
-    // Mostrar formulario de registro
+    // Método para procesar el login
+    @PostMapping("/login")
+    public String procesarLogin(HttpServletRequest req, Model model) {
+        HttpSession sess = req.getSession();
+        String pass = req.getParameter("password");
+        String name = req.getParameter("nombreusuario");
+
+        // Verifica si el usuario y la contraseña son correctos
+        Userlogin usuario = dao.checkuser(name, pass);
+
+        if (usuario != null) {
+            // Si el usuario existe, lo guarda en la sesión
+            sess.setAttribute("user", usuario);
+            sess.setAttribute("name", name);
+
+            if (usuario.getEs_admin() == 1) {
+                // Si es admin, muestra la lista de usuarios
+                model.addAttribute("lista_usuarios", dao.getAllUsers());
+                return "admin"; // Página de administración
+            } else {
+                model.addAttribute("usuario", name);
+                return "articulos"; // Página para el usuario regular
+            }
+        } else {
+            // Si el usuario no existe o la contraseña es incorrecta
+            model.addAttribute("exist", dao.existeusu(name) != null ? 2 : 1);
+            return "login"; // Vuelve a mostrar la página de login
+        }
+    }
+
+    // Método para mostrar la página de registro
     @GetMapping("/registro")
     public String mostrarRegistro() {
-        return "registro";
+        return "registro"; // Página de registro
     }
 
-    // Procesar registro
+    // Método para registrar un nuevo usuario
     @PostMapping("/registro")
-    public String registrarUsuario(
-            @RequestParam("usuario") String nombreusuario,
-            @RequestParam("password") String password,
-            @RequestParam("rol") String rol,
-            Model model) {
+    public String registrarUsuario(HttpServletRequest req, Model model) {
+        String pass = req.getParameter("password");
+        String name = req.getParameter("nombre");
+        int esAdmin = Integer.parseInt(req.getParameter("es_admin")); // Convertir a entero
 
-        // Verificar si el usuario ya existe
-        if (usuarioRepository.findByNombreusuario(nombreusuario).isPresent()) {
-            model.addAttribute("error", "El usuario ya está registrado.");
-            return "registro";
+        // Verifica si el nombre de usuario ya existe
+        if (dao.existeusu(name) != null) {
+            model.addAttribute("exist", true); // Si ya existe, muestra un mensaje
+            return "registro"; // Vuelve a la página de registro
+        } else {
+            // Si no existe, crea el usuario
+            dao.crearUsuario(name, pass, esAdmin);
+            return "login"; // Redirige a la página de login después del registro
         }
-
-        // Guardar usuario en base de datos
-        Usuario nuevoUsuario = new Usuario(nombreusuario, password, rol);
-        usuarioRepository.save(nuevoUsuario);
-
-        return "redirect:/login";
     }
 
-    // Cerrar sesión
+    // Método para cerrar sesión
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/login";
+        session.invalidate(); // Invalida la sesión
+        return "redirect:/login"; // Redirige a la página de login
     }
-
-    // Vista de artículos (para usuarios normales)
+    
+    // Método para mostrar la página de artículos (para usuarios logueados)
     @GetMapping("/articulos")
-    public String mostrarArticulos(Model model, HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
+    public String mostrarArticulos(HttpSession sesion, Model model) {
+        Userlogin usuario = (Userlogin) sesion.getAttribute("user");
 
         if (usuario == null) {
-            return "redirect:/login";
+            return "redirect:/login"; // Si no hay sesión, redirige al login
         }
 
-        model.addAttribute("usuario", usuario);
-        return "articulos";
+        model.addAttribute("usuario", usuario.getNombre());
+        return "articulos"; // Muestra la página de artículos
     }
-
-    // Vista para el Administrador (Lista de Usuarios)
-    @GetMapping("/datosusuario")
-    public String mostrarUsuarios(Model model, HttpSession session) {
-        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuario");
-
-        if (usuarioLogueado == null || !"Administrador".equalsIgnoreCase(usuarioLogueado.getRol().trim())) {
-            return "redirect:/articulos";
-        }
-
-        // Obtener lista de usuarios desde la base de datos
-        model.addAttribute("usuarios", usuarioRepository.findAll());
-
-        return "datosusuario";
+    
+    @GetMapping("/datosusuarios")
+    public String mostrarUsuarios(Model model) {
+        // Obtienes la lista de usuarios
+        List<Userlogin> usuarios = dao.getAllUsers();
+        model.addAttribute("usuarios", usuarios); // La lista se pasa al modelo
+        return "usuarios"; // El nombre del archivo HTML que muestra la lista de usuarios
     }
 }

@@ -7,16 +7,16 @@
 <body>
     <h2>Registrarse</h2>
     <form action="/registro" method="post">
-        <label>Usuario:</label>
-        <input type="text" name="usuario" required><br>
+        <label>Nombre de usuario:</label>
+        <input type="text" name="nombre" required><br>
 
         <label>Contraseña:</label>
         <input type="password" name="password" required><br>
 
         <label>Rol:</label>
-        <select name="rol" required>
-            <option value="Usuario">Usuario</option>
-            <option value="Administrador">Administrador</option>
+        <select name="es_admin" required>
+            <option value="0">Usuario</option>
+            <option value="1">Administrador</option>
         </select><br>
 
         <button type="submit">Registrar</button>
