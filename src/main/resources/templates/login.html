@@ -12,6 +12,7 @@
 
     <label>Contraseña:</label>
     <input type="password" name="password" required><br>
+    <p style="color: red;" th:if="${error}" th:text="${error}"></p>
 
     <button type="submit">Iniciar Sesión</button>
 </form>

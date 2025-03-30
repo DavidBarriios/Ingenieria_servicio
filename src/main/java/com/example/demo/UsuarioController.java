@@ -85,6 +85,7 @@ public class UsuarioController {
             return "login"; // Redirige a la página de login después del registro
         }
     }
+    
 
     // Método para cerrar sesión
     @GetMapping("/logout")
@@ -106,11 +107,4 @@ public class UsuarioController {
         return "articulos"; // Muestra la página de artículos
     }
     
-    @GetMapping("/datosusuarios")
-    public String mostrarUsuarios(Model model) {
-        // Obtienes la lista de usuarios
-        List<Userlogin> usuarios = dao.getAllUsers();
-        model.addAttribute("usuarios", usuarios); // La lista se pasa al modelo
-        return "usuarios"; // El nombre del archivo HTML que muestra la lista de usuarios
-    }
 }
