@@ -7,22 +7,22 @@
 <body>
     <h2>Registrarse</h2>
     <form action="/registro" method="post">
-    <label for="nombre">Nombre de usuario:</label>
-    <input type="text" id="nombre" name="nombre" required><br><br>
+        <label>Nombre de usuario:</label>
+        <input type="text" name="nombre" required><br>
 
-    <label for="password">Contraseña:</label>
-    <input type="password" id="password" name="password" required><br><br>
+        <label>Contraseña:</label>
+        <input type="password" name="password" required><br>
 
-    <label for="es_admin">¿Es administrador?</label>
-    <select id="es_admin" name="es_admin">
-        <option value="0">No</option>
-        <option value="1">Sí</option>
-    </select><br><br>
+        <label>Rol:</label>
+        <select name="es_admin" required>
+            <option value="0">Usuario</option>
+            <option value="1">Administrador</option>
+        </select><br>
 
-    <input type="submit" value="Registrarse">
-</form>
+        <button type="submit">Registrar</button>
+    </form>
 
-    <p style="color: red;" th:text="${error}"></p>
+   <p style="color: red;" th:text="${error}"></p>
 
     <p>¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a></p>
 </body>
