@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Datos Usuario</title>
+</head>
+<body>
+<h2>Datos del Usuario</h2>
+
+<p th:if="${usuario != null}">
+    Nombre de usuario: <span th:text="${usuario.nombreusuario}"></span><br>
+    Email: <span th:text="${usuario.email}"></span><br>
+    Nombre: <span th:text="${usuario.nombre}"></span><br>
+    Apellidos: <span th:text="${usuario.apellidos}"></span><br>
+</p>
+
+<p th:if="${usuario == null}">
+    No hay datos de usuario en la sesión.
+</p>
+
+<hr>
+<p>Nombre de usuario desde cookie (permanente): <strong th:text="${cookieNombre}"></strong></p>
+
+</body>
+</html>

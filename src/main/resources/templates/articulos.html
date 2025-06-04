@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <!-- Cargar el SDK de PayPal solo una vez -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAA2-VXGS8z2HNpCFVCGHvNIvoBdiSkztdoJJnO8C_QyDXv1yHw5tyLWASLxOB71bBHbZhtNJ17vO0CflY&components=hosted-buttons&disable-funding=venmo&currency=EUR"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+    }
+
+    .jumbotron {
+      margin-bottom: 0;
+    }
+
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+  </style>
+</head>
+
+<body>
+<h2>Bienvenido, <span th:text="${usuario}"></span></h2>  <!-- Aquí se muestra el nombre del usuario -->
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Online Store</h1>      
+    <p>Mission, Vission & Values</p>
+  </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Logo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Deals</a></li>
+        <li><a href="#">Stores</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">    
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">BLACK FRIDAY DEAL</div>
+        <div class="panel-body"><img src="/images/234.webp" class="img-responsive" style="width:100%" alt="Deal 1"></div>
+        <div class="panel-footer">Sudadera de arreglar</div>
+        <!-- Contenedor único para el botón de PayPal -->        <div id="paypal-container-1"></div>
+        <script>
+          paypal.HostedButtons({
+            hostedButtonId: "3E5X3VN6GAJTL",
+          }).render("#paypal-container-1");
+        </script>
+      </div>
+
+    </div>
+    
+    <div class="col-sm-4"> 
+      <div class="panel panel-danger">
+        <div class="panel-heading">BLACK FRIDAY DEAL</div>
+        <div class="panel-body"><img src="/images/123.webp" class="img-responsive" style="width:100%" alt="Deal 2"></div>
+        <div class="panel-footer">Sudadera básica naranja</div>
+        <!-- Contenedor único para el botón de PayPal -->
+
+    </div>
+    
+    <div class="col-sm-4"> 
+      <div class="panel panel-success">
+        <div class="panel-heading">BLACK FRIDAY DEAL</div>
+        <div class="panel-body"><img src="/images/shopping.webp" class="img-responsive" style="width:100%" alt="Deal 3"></div>
+        <div class="panel-footer">Sudadera de lana azul "logo"</div>
+        <!-- Contenedor único para el botón de PayPal -->
+        <div id="paypal-container-3"></div>
+        <script>
+          paypal.HostedButtons({
+            hostedButtonId: "3E5X3VN6GAJTL",
+          }).render("#paypal-container-3");
+        </script>
+      </div>
+    </div>
+  </div>
+</div><br>
+
+<footer class="container-fluid text-center">
+  <p>Online Store Copyright</p>  
+  <form class="form-inline">Get deals:
+    <input type="email" class="form-control" size="50" placeholder="Email Address">
+    <button type="button" class="btn btn-danger">Sign Up</button>
+  </form>
+</footer>
+
+<!-- Aquí agregamos el condicional para mostrar un mensaje si el usuario no está logueado -->
+<p th:if="${usuario == null}" style="color: red;">No tienes acceso. <a href="/login">Inicia sesión</a></p>
+
+<!-- Mostrar botón de cerrar sesión si el usuario está logueado -->
+<button th:if="${usuario != null}" onclick="window.location.href='/logout'">Cerrar sesión</button>
+
+</body>
+</html>
+

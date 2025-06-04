@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios Registrados</title>
+</head>
+<body>
+    <h2>Lista de Usuarios Registrados</h2>
+
+    <p th:if="${usuarios.empty}">No hay usuarios registrados.</p>
+
+    <table border="1" th:if="${not usuarios.empty}">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="usuario : ${usuarios}">
+                <td th:text="${usuario.nombre}"></td>
+                <td th:text="${usuario.es_admin == 1 ? 'Administrador' : 'Usuario Regular'}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/logout">Cerrar sesión</a>
+</body>
+</html>
